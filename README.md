@@ -106,7 +106,7 @@ The AutoRia scraper is designed with modularity, scalability, and fault-toleranc
     - daily_task: Triggers daily database dump at scheduled time.
 
 ### 🔒 Robust Features
- - Proxy rotation support.
+ - Parallel scraping with proxy-based scaling
  - Retries and error logging on failed HTTP requests.
  - Handles edge cases like deleted listings or temporary blocks (HTTP 429).
  - Displays parsing statistics (speed, page count, total parsed).
@@ -117,6 +117,6 @@ ___
  - Python 3
  - SQLAlchemy + Alembic
  - BeautifulSoup
- - Requests
+ - HTTPX + Asyncio
  - Docker & Docker Compose
  - PostgreSQL / SQLite
