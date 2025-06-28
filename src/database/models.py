@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import String, Integer, DateTime
+from sqlalchemy import String, Integer
 from datetime import datetime, UTC
 
 from src.utils.helpers import safe_str

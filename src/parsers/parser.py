@@ -1,11 +1,9 @@
 import asyncio
 import logging
+import httpcore
 import traceback
 
-import httpcore
 from bs4 import BeautifulSoup
-from datetime import datetime, UTC
-
 from httpx import AsyncClient, HTTPStatusError
 
 from src.config.settings import settings
@@ -13,13 +11,14 @@ from src.database.models import Car
 from src.exceptions import MissingRequiredField
 from src.parsers.errors.sold_error import DeletionBannerParser
 from src.parsers.fields import (
-    TitleParser,
-    PriceParser,
+    PhoneNumberParser,
+    CarNumberParser,
+    ImageUrlsParser,
     OdometerParser,
     UsernameParser,
-    PhoneNumberParser,
+    TitleParser,
+    PriceParser,
     VinParser,
-    CarNumberParser, ImageUrlsParser
 )
 
 
@@ -57,7 +56,6 @@ class AutoRiaParser:
         html = await self.fetch_html(client, url)
         soup = BeautifulSoup(html, "html.parser")
 
-        datetime_found = datetime.now(UTC)
 
         try:
             title = TitleParser.parse(soup)
@@ -79,8 +77,7 @@ class AutoRiaParser:
                 image_url=image_urls[0] if image_urls else None,
                 images_count=len(image_urls),
                 car_number=car_number,
-                car_vin=car_vin,
-                datetime_found=datetime_found
+                car_vin=car_vin
             )
 
         except MissingRequiredField as e:

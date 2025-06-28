@@ -1,23 +1,21 @@
-
 import asyncio
-import base64
 import logging
 import time
-from urllib.parse import urlparse
 
-from httpx import AsyncClient, BasicAuth
+from httpx import AsyncClient
 from sqlalchemy import insert
 from typing import Optional, List
-from sqlalchemy.dialects.postgresql import insert as pg_insert
 from fake_useragent import UserAgent
+from sqlalchemy.dialects.postgresql import insert as pg_insert
+
 from src.config.settings import settings
 from src.parsers.parser import AutoRiaParser
 from src.database.db import AsyncDBSession
 from src.database.models import Car
-from src.utils.helpers import write_logs_table_header, get_proxy_headers
+from src.utils.helpers import write_logs_table_header
 
 
-user_agent = UserAgent()
+
 
 class AutoRiaScraper:
     def __init__(self, base_url, proxies: Optional[List[str]] = None, max_concurrent_tasks: int = 5):
@@ -25,13 +23,13 @@ class AutoRiaScraper:
         self.parser = AutoRiaParser()
         self.proxies = proxies or [None]
         self.semaphore = asyncio.Semaphore(max_concurrent_tasks)
-
+        self.user_agent = UserAgent()
 
 
     async def start_worker(self, page: int, proxy: Optional[str]):
         async with self.semaphore:
             headers = {
-                "User-Agent": user_agent.random,
+                "User-Agent": self.user_agent.random,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                 "Accept-Language": "uk-UA,uk;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Connection": "keep-alive",

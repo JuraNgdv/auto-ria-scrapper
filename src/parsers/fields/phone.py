@@ -1,6 +1,6 @@
-import asyncio
 import re
 import json
+import asyncio
 import logging
 
 from bs4 import BeautifulSoup

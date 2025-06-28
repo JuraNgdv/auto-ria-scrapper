@@ -1,14 +1,14 @@
-import base64
-import subprocess
 import os
+import subprocess
 from datetime import datetime
 
 from src.config.settings import settings
 
 
-def safe_str(*values,  length: int=None) -> str:
+def safe_str(*values, length: int = None) -> str:
     s = ''.join([str(s) for s in values if s is not None])
     return s[:length] if length is not None else s
+
 
 def write_logs_table_header(page):
     widths = [90, 35, 10, 10, 30, 16, 15, 25]
@@ -17,14 +17,6 @@ def write_logs_table_header(page):
     header_separator = " ".join("-" * width for width in widths)
     return header_row, header_separator
 
-def get_proxy_headers(proxy_url: str) -> dict:
-    from urllib.parse import urlparse
-    parsed = urlparse(proxy_url)
-    user_pass = f"{parsed.username}:{parsed.password}"
-    encoded = base64.b64encode(user_pass.encode()).decode()
-    return {
-        "Proxy-Authorization": f"Basic {encoded}"
-    }
 
 def make_db_dump():
     os.makedirs("dumps", exist_ok=True)

@@ -1,9 +1,7 @@
 import json
-import time
 
 from bs4 import BeautifulSoup
 
-from src.exceptions import MissingRequiredField
 
 
 class VinParser:
