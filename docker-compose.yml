@@ -16,7 +16,7 @@ services:
     image: postgres:13-alpine
     container_name: postgres_db
     ports:
-      - "${DB_PORT}:5432"
+      - "${DB_PORT}:${DB_PORT}"
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
