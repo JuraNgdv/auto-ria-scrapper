@@ -5,3 +5,4 @@ asyncpg
 APScheduler
 pydantic-settings
 fake_useragent
+alembic
