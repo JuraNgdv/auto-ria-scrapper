@@ -1,0 +1,7 @@
+httpx
+beautifulsoup4
+sqlalchemy[asyncio]
+aiosqlite
+APScheduler
+pydantic-settings
+fake_useragent
