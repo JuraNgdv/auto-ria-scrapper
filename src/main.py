@@ -4,7 +4,7 @@ import logging
 from src.config.settings import settings
 from src.scheduler.scheduler import delayed_repeat_task, daily_task
 from src.database.models import Base
-from src.database.db import engine
+from src.database.db import engine, wait_for_car_table
 from src.scraper import AutoRiaScraper
 from src.utils.helpers import make_db_dump
 
@@ -26,6 +26,8 @@ async def main():
     logging.info("USING DB: %s", settings.db_url)
     if settings.DEV_MODE:
         await init_db()
+    else:
+        await wait_for_car_table()
     await daily_task(make_db_dump, time_period=settings.DUMP_TIME)
     scraper = AutoRiaScraper(base_url=settings.START_URL, proxies=settings.PROXIES)
     await delayed_repeat_task(scraper.run, settings.SCRAPE_REPEAT_AFTER_MINUTES)
