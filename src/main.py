@@ -23,6 +23,7 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
 
 async def main():
+    logging.info("USING DB: %s", settings.db_url)
     if settings.DEV_MODE:
         await init_db()
     await daily_task(make_db_dump, time_period=settings.DUMP_TIME)
