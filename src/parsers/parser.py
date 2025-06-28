@@ -68,7 +68,8 @@ class AutoRiaParser:
             car_vin = VinParser.parse(soup)
             image_urls = ImageUrlsParser.parse(soup)
             car_number = CarNumberParser.parse(soup)
-            datetime_found = datetime.now(UTC)
+            datetime_found = datetime.now()
+
             return Car(
                 url=url,
                 title=title,
