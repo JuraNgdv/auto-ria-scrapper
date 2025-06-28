@@ -1,5 +1,7 @@
 import asyncio
 import logging
+from datetime import datetime, UTC
+
 import httpcore
 import traceback
 
@@ -66,7 +68,7 @@ class AutoRiaParser:
             car_vin = VinParser.parse(soup)
             image_urls = ImageUrlsParser.parse(soup)
             car_number = CarNumberParser.parse(soup)
-
+            datetime_found = datetime.now(UTC)
             return Car(
                 url=url,
                 title=title,
@@ -77,7 +79,8 @@ class AutoRiaParser:
                 image_url=image_urls[0] if image_urls else None,
                 images_count=len(image_urls),
                 car_number=car_number,
-                car_vin=car_vin
+                car_vin=car_vin,
+                datetime_found=datetime_found
             )
 
         except MissingRequiredField as e:

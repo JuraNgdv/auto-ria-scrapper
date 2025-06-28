@@ -1,6 +1,6 @@
 from sqlalchemy.dialects.mysql import BIGINT
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, DATETIME
 from datetime import datetime, UTC
 
 from src.utils.helpers import safe_str
@@ -23,7 +23,7 @@ class Car(Base):
     images_count: Mapped[int] = mapped_column(Integer)
     car_number: Mapped[str] = mapped_column(String, nullable=True)
     car_vin: Mapped[str] = mapped_column(String, nullable=True)
-    datetime_found: Mapped[datetime] = mapped_column(default=datetime.now(UTC))
+    datetime_found: Mapped[datetime] = mapped_column(DATETIME)
 
     def __str__(self):
         return f"Car {self.url} {self.car_vin}"
