@@ -1,3 +1,4 @@
+from sqlalchemy.dialects.mysql import BIGINT
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import String, Integer
 from datetime import datetime, UTC
@@ -15,9 +16,9 @@ class Car(Base):
     url: Mapped[str] = mapped_column(String, index=True, unique=True)
     title: Mapped[str] = mapped_column(String)
     price_usd: Mapped[int] = mapped_column(Integer)
-    odometer: Mapped[int] = mapped_column(Integer, nullable=True)
+    odometer: Mapped[int] = mapped_column(BIGINT, nullable=True)
     username: Mapped[str] = mapped_column(String)
-    phone_number: Mapped[int] = mapped_column(Integer, nullable=True)
+    phone_number: Mapped[int] = mapped_column(BIGINT, nullable=True)
     image_url: Mapped[str] = mapped_column(String, nullable=True)
     images_count: Mapped[int] = mapped_column(Integer)
     car_number: Mapped[str] = mapped_column(String, nullable=True)
