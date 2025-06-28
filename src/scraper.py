@@ -2,11 +2,13 @@ import asyncio
 import logging
 import time
 
+import asyncpg
 from httpx import AsyncClient
 from sqlalchemy import insert
 from typing import Optional, List
 from fake_useragent import UserAgent
 from sqlalchemy.dialects.postgresql import insert as pg_insert
+from sqlalchemy.exc import ProgrammingError
 
 from src.config.settings import settings
 from src.parsers.parser import AutoRiaParser
@@ -119,3 +121,15 @@ class AutoRiaScraper:
         await connection.execute(stmt)
         await connection.commit()
 
+    async def save_car_with_retry(self, connection, stmt, max_retries=3, delay=20):
+        for attempt in range(1, max_retries + 1):
+            try:
+                await connection.execute(stmt)
+                return
+            except ProgrammingError as e:
+                if isinstance(e.orig, asyncpg.exceptions.UndefinedTableError):
+                    logging.error(f"Cant find table? please migrate {attempt}/{max_retries}. Waiting {delay} sec...")
+                    await asyncio.sleep(delay)
+                else:
+                    raise
+        raise RuntimeError("Table still missing")
