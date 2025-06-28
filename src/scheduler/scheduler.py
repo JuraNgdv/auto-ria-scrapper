@@ -11,21 +11,21 @@ scheduler = AsyncIOScheduler()
 
 
 async def delayed_repeat_task(
-        task: Callable,
-        repeat_after_minutes: Optional[int | float] = None,
-        forever: bool = True
+    task: Callable,
+    repeat_after_minutes: int = None,
+    forever: bool = True
 ):
     logging.info("Executing %s started", task.__name__)
     await task()
     logging.info("Executing %s finished", task.__name__)
-    if repeat_after_minutes:
-        while True:
+
+    if repeat_after_minutes and forever:
             next_run_time = datetime.now() + timedelta(minutes=repeat_after_minutes)
-            scheduler.add_job(func=delayed_repeat_task,
-                              args=[task, repeat_after_minutes, forever],
-                              trigger=DateTrigger(run_date=next_run_time))
-            if not forever:
-                break
+            scheduler.add_job(
+                func=delayed_repeat_task,
+                args=[task, repeat_after_minutes, forever],
+                trigger=DateTrigger(run_date=next_run_time)
+            )
 
 
 async def daily_task(task: Callable, *args, time_period: str):
